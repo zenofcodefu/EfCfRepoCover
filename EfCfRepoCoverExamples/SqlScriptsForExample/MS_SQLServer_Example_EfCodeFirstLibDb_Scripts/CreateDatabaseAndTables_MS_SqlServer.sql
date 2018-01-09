@@ -1,0 +1,160 @@
+﻿USE [master]
+GO
+
+/* ***** (Begin) Create Database [EfCodeFirstLibDb] ***** */
+CREATE DATABASE [EfCodeFirstLibDb]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'EfCodeFirstLibDb', FILENAME = N'C:\MSSQL\MSSQL11.MSSQLSERVER\MSSQL\DATA\EfCodeFirstLibDb.mdf' , SIZE = 4096KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'EfCodeFirstLibDb_log', FILENAME = N'C:\MSSQL\MSSQL11.MSSQLSERVER\MSSQL\DATA\EfCodeFirstLibDb_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET COMPATIBILITY_LEVEL = 110
+GO
+
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [EfCodeFirstLibDb].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET ANSI_NULL_DEFAULT OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET ANSI_NULLS OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET ANSI_PADDING OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET ANSI_WARNINGS OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET ARITHABORT OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET AUTO_CLOSE OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET AUTO_CREATE_STATISTICS ON 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET AUTO_SHRINK OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET AUTO_UPDATE_STATISTICS ON 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET CURSOR_DEFAULT  GLOBAL 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET NUMERIC_ROUNDABORT OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET QUOTED_IDENTIFIER OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET RECURSIVE_TRIGGERS OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET  DISABLE_BROKER 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET TRUSTWORTHY OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET PARAMETERIZATION SIMPLE 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET HONOR_BROKER_PRIORITY OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET RECOVERY FULL 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET  MULTI_USER 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET PAGE_VERIFY CHECKSUM  
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET DB_CHAINING OFF 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+
+ALTER DATABASE [EfCodeFirstLibDb] SET  READ_WRITE 
+GO
+/* ***** (End) Create Database [EfCodeFirstLibDb] ***** */
+
+
+USE [EfCodeFirstLibDb]
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+/* ***** (Begin) Create Table [Person] ***** */
+CREATE TABLE [dbo].[Person](
+	[PersonId] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [nvarchar](50) NOT NULL,
+	[FamilyName] [nvarchar](50) NOT NULL,
+	[PetCount] [int] NOT NULL CONSTRAINT [DF_Person_PetCount]  DEFAULT ((0)),
+ CONSTRAINT [PK_Person] PRIMARY KEY CLUSTERED 
+(
+	[PersonId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+/* ***** (End) Create Table [Person] ***** */
+GO
+
+/* ***** (Begin) Create Table [Student] ***** */
+CREATE TABLE [dbo].[Student](
+	[StudentId] [int] IDENTITY(1,1) NOT NULL,
+	[PersonId] [int] NOT NULL,
+	[CourseCount] [int] NOT NULL,
+ CONSTRAINT [PK_Student] PRIMARY KEY CLUSTERED 
+(
+	[StudentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+/* ***** (Begin) Create Table [Student] ***** */
+
+/* ***** (Begin) Add Foreign Key To [Student] table (based on [Person].[PersonId] and [Student].[PersonId] relationship) ***** */
+GO
+ALTER TABLE [dbo].[Student] ADD  CONSTRAINT [DF_Student_CourseCount]  DEFAULT ((0)) FOR [CourseCount]
+GO
+
+ALTER TABLE [dbo].[Student]  WITH CHECK ADD  CONSTRAINT [FK_Person_Student] FOREIGN KEY([PersonId])
+REFERENCES [dbo].[Person] ([PersonId])
+GO
+
+ALTER TABLE [dbo].[Student] CHECK CONSTRAINT [FK_Person_Student]
+GO
+/* ***** (End) Add Foreign Key To [Student] table (based on [Person].[PersonId] and [Student].[PersonId] relationship) ***** */
+
