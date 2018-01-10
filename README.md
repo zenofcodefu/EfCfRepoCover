@@ -6,8 +6,9 @@ Entity Framework (Code First) Repository Cover library (multiple database suppor
 
 - It's a 'Generic' repository; you can specify any table (poco class) in a database (DbContext), because the methods are generic (no need to write CRUD methods specific to each table (poco class)).
 - The code to use this class is small (e.g one line for a CRUD operation (e.g. 'var bookFound = base.FindEntity(Book, keyValues, libraryDbContext)'), with option to 'saveNow' for each operation).
-- Supports multiple databases without code changes (e.g. MS SQL Server, MySql/MariaDb, SQLite) with database-specific connection resiliency
+- Supports multiple databases without code changes (e.g. MS SQL Server, MySql/MariaDb, SQLite) with database-specific connection resiliency. Relatively easy to extend to any database that supports EntityFramework.
 - Allows easy use of 'user initiated transactions' with 'connection resiliency' (i.e. 'retries') without additional coding (hides the code involved to allow user-initiated transactions with 'retry' logic).
+- Straightforward support for stored procedures (including multiple input and output parameters).
 - Allows 'connection resiliency' (i.e. 'retries') for all operations (including 'user initiated transactions').	
 	- (Note: Provides kludgy exception workaround/retry code for known EF issue with the EF code base not clearing the SqlParameterCollection used when ExecutionStrategy retry logic occurs.)
 	- (Reference: https://entityframework.codeplex.com/SourceControl/changeset/107283972666babbff10fb7409298f39200acb09 AND http://entityframework.codeplex.com/workitem/2952 ).
@@ -41,3 +42,17 @@ LibaryRepository.DeleteEntity(deleteBook);                          // Delete
 QueryRawSql()                 // Sql executed against DbContext database; attempts to map results to specified POCO class
 RunTransactionalOperations()  // Run 'user-initiated' transactions with 'DbExecutionStrategy', 'retry' logic
 ```
+
+###Tests
+The 'EfCfRepoCover.Tests' project includes scripts to create the test databases and test tables (and a local SQLite file) for:   
+MS SQL Server, MySql, MariaDb, and SQLite databases.
+
+###Examples
+- The 'EfCfRepoCoverExamples' also includes scripts to create the test databases and test tables (and a local SQLite file) for:
+MS SQL Server, MySql, MariaDb, and SQLite databases.   
+- The 'Program.cs' file contains example usages of the generic repository methods found in an example repository for each the previously mentioned database types.   
+- In the App.config file, an <appSettings> key/value pair specifies which database will be used (this is for the connection resiliency and log injection, as the provider specific ExecutionStrategy is loaded at an app domain level, which is accomplished by Fody weaver allowing the dll to be initialized before Entity Framework loads into the app domain).
+
+	```
+	<add key="entityFrameworkFriendlyProviderName" value="MsSqlServer" /> <!-- (Not case-sensitive) Valid Values: "MsSqlServer", "MySql", "MariaDb", "SQLite". -->
+	```
