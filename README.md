@@ -44,15 +44,15 @@ RunTransactionalOperations()  // Run 'user-initiated' transactions with 'DbExecu
 ```
 
 ### Tests
-The 'EfCfRepoCover.Tests' project includes scripts to create the test databases and test tables (and a local SQLite file) for:   
+- The 'EfCfRepoCover.Tests' project includes scripts to create the test databases and test tables (and a local SQLite file) for:   
 MS SQL Server, MySql, MariaDb, and SQLite databases.
 
 ### Examples
 - The 'EfCfRepoCoverExamples' also includes scripts to create the test databases and test tables (and a local SQLite file) for:
 MS SQL Server, MySql, MariaDb, and SQLite databases.   
-- The 'Program.cs' file contains example usages of the generic repository methods found in an example repository for each the previously mentioned database types.   
-- In the App.config file, an <appSettings> key/value pair specifies which database will be used (this is for the connection resiliency and log injection, as the provider specific ExecutionStrategy is loaded at an app domain level, which is accomplished by Fody weaver allowing the dll to be initialized before Entity Framework loads into the app domain).
-
+- The 'Program.cs' file contains example usages of the generic repository methods found in an example repository for each of the previously mentioned database types.   
+- In the App.config file, an ```<appSettings>``` key/value pair specifies which database will be used (this is for the connection resiliency and log injection, as the provider specific ExecutionStrategy is loaded at an app domain level, which is accomplished by Fody weaver allowing the dll to be initialized before Entity Framework loads into the app domain).
+(Example setting for MS Sql Server:)
 	```
 	<add key="entityFrameworkFriendlyProviderName" value="MsSqlServer" /> <!-- (Not case-sensitive) Valid Values: "MsSqlServer", "MySql", "MariaDb", "SQLite". -->
 	```
