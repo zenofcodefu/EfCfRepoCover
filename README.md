@@ -18,16 +18,16 @@ Entity Framework (Code First) Repository Cover library (multiple database suppor
 	- (Some Entity Framework exceptions/errors can be a little tricky to catch the right error type and retrieve/format the relevant information; errors are caught (formatted if relevant) and logged/traced for you.)
 - Provides some handy utility methods for efCf operations (e.g. json (& serializable) 'deep clone' methods to make creating an 'update' entity easier (e.g. one line to 'deep clone' entity, then make 'update' changes to relevant properties)).
 
-Usage:
+## Usage:
 
-###General: Create two classes;
+### General: Create two classes;
 1. Class derived from 'EfCfBaseDbContext' (represents database and contains 'DbSet<>' properties (each property represents a table in the database)).
 2. class derived from 'EfCfBaseRepository' (provides access to built-in (inherited) CRUD methods; add any additional methods for interacting with the database here)
       
-###Specific:
+### Specific:
 - Create a C# class for each table you want to work with in a database (e.g. 'public class Book'). (Note: There are EF tools to generate C# classes from existing tables in a database.)
 - Create a 'DbContext' derived class (e.g. 'LibraryDbContext : EfCfBaseDbContext').
-          - Add to that class, a DbSet<> property for each table in the database you want to work with (e.g. 'public virtual DbSet<Book> Book { get; set; }' - represents 'Book' table in a database).
+	- Add to that class, a DbSet<> property for each table in the database you want to work with (e.g. 'public virtual DbSet<Book> Book { get; set; }' - represents 'Book' table in a database).
 - Create a 'EfCfBaseRepository' derived class (e.g. 'LibraryRepository : EfCfBaseRepository').
 - You're done. Use any desired, existing CRUD methods via the repository (built-in (base) are shown below; add any additional methods you like for working with the tables in this derived class). 
     
