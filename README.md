@@ -43,11 +43,11 @@ QueryRawSql()                 // Sql executed against DbContext database; attemp
 RunTransactionalOperations()  // Run 'user-initiated' transactions with 'DbExecutionStrategy', 'retry' logic
 ```
 
-###Tests
+### Tests
 The 'EfCfRepoCover.Tests' project includes scripts to create the test databases and test tables (and a local SQLite file) for:   
 MS SQL Server, MySql, MariaDb, and SQLite databases.
 
-###Examples
+### Examples
 - The 'EfCfRepoCoverExamples' also includes scripts to create the test databases and test tables (and a local SQLite file) for:
 MS SQL Server, MySql, MariaDb, and SQLite databases.   
 - The 'Program.cs' file contains example usages of the generic repository methods found in an example repository for each the previously mentioned database types.   
